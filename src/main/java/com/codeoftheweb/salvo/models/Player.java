@@ -24,6 +24,8 @@ public class Player {
 
     private String userName;
 
+    private String password;
+
     @OneToMany(mappedBy = "player", fetch= FetchType.EAGER)
     Set<GamePlayer> gamePlayers;
 
@@ -33,8 +35,9 @@ public class Player {
     //Constructor
     public Player() {}
 
-    public Player (String name){
-        this.userName = name;
+    public Player (String userName, String password){
+        this.userName = userName;
+        this.password = password;
     }
 
 
@@ -59,6 +62,10 @@ public class Player {
         return userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public Long getId() {
         return id;
     }
@@ -72,10 +79,14 @@ public class Player {
     }
 
     public Optional<Score> getScore(Game game){
-        return this.scores.stream().filter(s -> s.getGame().equals(game)).findFirst();
+        return this.scores.stream().filter(s -> s.getGame().getGameId().equals(game.getGameId())).findFirst();
     }
     //SETTER
     public void setUserName (String userName){
         this.userName = userName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

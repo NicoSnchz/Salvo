@@ -3,11 +3,15 @@ package com.codeoftheweb.salvo.controller;
 import com.codeoftheweb.salvo.models.*;
 import com.codeoftheweb.salvo.repository.GamePlayerRepository;
 import com.codeoftheweb.salvo.repository.GameRepository;
+import com.codeoftheweb.salvo.repository.PlayerRepository;
 import com.codeoftheweb.salvo.repository.SalvoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,10 +31,42 @@ public class SalvoController {
     @Autowired
     private SalvoRepository salvoRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    public Player currentPlayer(Authentication authentication){
+        return playerRepository.findByUserName(authentication.getName());
+    }
+
+    private boolean isGuest(Authentication authentication) {
+        return authentication == null || authentication instanceof AnonymousAuthenticationToken;
+    }
+
+    @PostMapping("/players")
+    public ResponseEntity<Object> register(@RequestParam String email, @RequestParam String password){
+        if (email.isEmpty() || password.isEmpty()){
+            return new ResponseEntity<>("Missing data", HttpStatus.FORBIDDEN);
+        }
+        if (playerRepository.findByUserName(email) != null) {
+            return new ResponseEntity<>("Name already in use", HttpStatus.FORBIDDEN);
+        }
+        playerRepository.save(new Player(email, passwordEncoder.encode(password)));
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @RequestMapping("/games")
-    public Map<String, Object> getGames() {
+    public Map<String, Object> getGames(Authentication authentication) {
         List<Game> gameList = gameRepo.findAll();
         Map<String, Object> dto = new LinkedHashMap<>();
+        //Si el usuario no esta logeado se lo toma como Guest.
+        if (isGuest(authentication)){
+            dto.put("player", "Guest");
+        }else{
+            dto.put("player", makePlayerDTO(currentPlayer(authentication)));
+        }
         dto.put("games", gameList.stream().map(this::makeGameDTO).collect(Collectors.toList()));
         return dto;
     }
@@ -50,12 +86,12 @@ public class SalvoController {
         gameDto.put("id", game.getGameId());
         gameDto.put("created", game.getGameStartDate());
         gameDto.put("gamePlayers", game.getGamePlayers().stream().map(this::makeGamePlayerDTO).collect(Collectors.toList()));
-        gameDto.put("scores", game.getGamePlayers().stream().map(z ->
-                                                                    {if (z.getScore().isPresent()) {
-                                                                        return makeScoreDTO(z.getScore().get());
+        gameDto.put("scores", game.getGamePlayers().stream().map(gamePlayer ->
+                                                                    {if (gamePlayer.getScore().isPresent()) {
+                                                                        return makeScoreDTO(gamePlayer.getScore().get());
                                                                     }
-                                                                    else {return "Partida en curso..."; }
-                                                                    }).collect(Collectors.toList()));;
+                                                                    else {return null; }
+                                                                    }).collect(Collectors.toList()));
                                                                     return gameDto;
     }
 
