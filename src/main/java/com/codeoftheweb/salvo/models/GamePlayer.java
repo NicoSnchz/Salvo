@@ -92,4 +92,8 @@ public class GamePlayer {
     public void setJoinDate(LocalDateTime joinDate) {
         this.joinDate = joinDate;
     }
+
+    public void setShips(Set<Ship> ships) {
+        this.ships = ships;
+    }
 }
