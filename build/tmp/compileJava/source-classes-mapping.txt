@@ -12,8 +12,10 @@ com/codeoftheweb/salvo/models/Score.java
  com.codeoftheweb.salvo.models.Score
 com/codeoftheweb/salvo/models/Salvo.java
  com.codeoftheweb.salvo.models.Salvo
-com/codeoftheweb/salvo/controller/SalvoController.java
- com.codeoftheweb.salvo.controller.SalvoController
+com/codeoftheweb/salvo/SalvoApplication.java
+ com.codeoftheweb.salvo.SalvoApplication
+ com.codeoftheweb.salvo.WebSecurityConfig
+ com.codeoftheweb.salvo.WebSecurityConfiguration
 com/codeoftheweb/salvo/models/Game.java
  com.codeoftheweb.salvo.models.Game
 com/codeoftheweb/salvo/models/Ship.java
@@ -24,7 +26,5 @@ com/codeoftheweb/salvo/repository/PlayerRepository.java
  com.codeoftheweb.salvo.repository.PlayerRepository
 com/codeoftheweb/salvo/models/GamePlayer.java
  com.codeoftheweb.salvo.models.GamePlayer
-com/codeoftheweb/salvo/SalvoApplication.java
- com.codeoftheweb.salvo.SalvoApplication
- com.codeoftheweb.salvo.WebSecurityConfig
- com.codeoftheweb.salvo.WebSecurityConfiguration
+com/codeoftheweb/salvo/controller/SalvoController.java
+ com.codeoftheweb.salvo.controller.SalvoController

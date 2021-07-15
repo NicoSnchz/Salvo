@@ -60,13 +60,15 @@ public class SalvoController {
             return new ResponseEntity<>(makeMap("error", "Player do not match Gameplayer"), HttpStatus.UNAUTHORIZED);
         }
 
-        if (!ships.isEmpty()){
+        Set<Ship> shipSet = gamePlayer.getShips();
+
+        if (!shipSet.isEmpty()){
             return new ResponseEntity<>(makeMap("error", "Ships already Located"), HttpStatus.FORBIDDEN);
         }else {
             for (Ship ship:ships){
-                shipRepository.save(new Ship(gamePlayer, ship.getShipType(), ship.getShipLocations()));
+                shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getShipLocations()));
             }
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(makeMap("OK", "Ships placed"),HttpStatus.CREATED);
         }
     }
 
@@ -95,6 +97,8 @@ public class SalvoController {
     @PostMapping("/game/{id}/players")
     public ResponseEntity<Map<String, Object>> joinGame(@PathVariable Long id, Authentication authentication){
         Optional<Game> game = gameRepo.findById(id);
+        GamePlayer gamePlayer = game.get().getGamePlayers().stream().findFirst().get();
+        Player player = currentPlayer(authentication);
 
         if (isGuest(authentication)){ //Pregunta si es un Guest
 
@@ -108,8 +112,11 @@ public class SalvoController {
 
             return new ResponseEntity<>(makeMap("error", "Game is full"), HttpStatus.FORBIDDEN);
 
-        }else {
+        }else if (player.getId().equals(gamePlayer.getPlayer().getId())){ //Pregunta si el player que intenta unirse es el mismo que el que ya esta dentro
 
+            return new ResponseEntity<>(makeMap("error", "Same player can't join twice!"), HttpStatus.CONFLICT);
+
+        }else{
             GamePlayer newGamePlayer = gamePlayerRepo.save(new GamePlayer(currentPlayer(authentication), game.get(), LocalDateTime.now()));
             return new ResponseEntity<>(makeMap("gpid",  newGamePlayer.getId()), HttpStatus.CREATED);
         }
@@ -207,7 +214,7 @@ public class SalvoController {
 
     private Map<String, Object> makeShipDTO(Ship ship) {
         Map<String, Object> shipDTO = new LinkedHashMap<>();
-        shipDTO.put("type", ship.getShipType());
+        shipDTO.put("type", ship.getType());
         shipDTO.put("locations", ship.getShipLocations());
         return shipDTO;
     }
