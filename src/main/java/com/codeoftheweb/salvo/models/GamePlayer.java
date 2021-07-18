@@ -80,6 +80,9 @@ public class GamePlayer {
 
     public Optional<Score> getScore() {return this.player.getScore(game);}
 
+    public  Optional<GamePlayer> getOpponent(GamePlayer gamePlayer){
+        return gamePlayer.getGame().getGamePlayers().stream().filter(x -> !x.getId().equals(gamePlayer.getId())).findFirst();}
+
     //SETTER
     public void setPlayer(Player player) {
         this.player = player;

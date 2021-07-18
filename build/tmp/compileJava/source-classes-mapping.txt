@@ -1,17 +1,39 @@
 com/codeoftheweb/salvo/repository/ScoreRepository.java
  com.codeoftheweb.salvo.repository.ScoreRepository
-com/codeoftheweb/salvo/repository/ShipRepository.java
- com.codeoftheweb.salvo.repository.ShipRepository
 com/codeoftheweb/salvo/repository/GameRepository.java
  com.codeoftheweb.salvo.repository.GameRepository
-com/codeoftheweb/salvo/repository/GamePlayerRepository.java
- com.codeoftheweb.salvo.repository.GamePlayerRepository
 com/codeoftheweb/salvo/repository/SalvoRepository.java
  com.codeoftheweb.salvo.repository.SalvoRepository
+com/codeoftheweb/salvo/dtos/GameDTO.java
+ com.codeoftheweb.salvo.dtos.GameDTO
+com/codeoftheweb/salvo/utilities/Util.java
+ com.codeoftheweb.salvo.utilities.Util
+com/codeoftheweb/salvo/dtos/HitsDTO.java
+ com.codeoftheweb.salvo.dtos.HitsDTO
+com/codeoftheweb/salvo/repository/GamePlayerRepository.java
+ com.codeoftheweb.salvo.repository.GamePlayerRepository
+com/codeoftheweb/salvo/repository/ShipRepository.java
+ com.codeoftheweb.salvo.repository.ShipRepository
+com/codeoftheweb/salvo/dtos/PlayerDTO.java
+ com.codeoftheweb.salvo.dtos.PlayerDTO
 com/codeoftheweb/salvo/models/Score.java
  com.codeoftheweb.salvo.models.Score
 com/codeoftheweb/salvo/models/Salvo.java
  com.codeoftheweb.salvo.models.Salvo
+com/codeoftheweb/salvo/dtos/ShipDTO.java
+ com.codeoftheweb.salvo.dtos.ShipDTO
+com/codeoftheweb/salvo/dtos/GamesDTO.java
+ com.codeoftheweb.salvo.dtos.GamesDTO
+com/codeoftheweb/salvo/repository/PlayerRepository.java
+ com.codeoftheweb.salvo.repository.PlayerRepository
+com/codeoftheweb/salvo/dtos/GameViewDTO.java
+ com.codeoftheweb.salvo.dtos.GameViewDTO
+com/codeoftheweb/salvo/dtos/GamePlayerDTO.java
+ com.codeoftheweb.salvo.dtos.GamePlayerDTO
+com/codeoftheweb/salvo/dtos/SalvoesDTO.java
+ com.codeoftheweb.salvo.dtos.SalvoesDTO
+com/codeoftheweb/salvo/dtos/ScoreDTO.java
+ com.codeoftheweb.salvo.dtos.ScoreDTO
 com/codeoftheweb/salvo/SalvoApplication.java
  com.codeoftheweb.salvo.SalvoApplication
  com.codeoftheweb.salvo.WebSecurityConfig
@@ -22,8 +44,6 @@ com/codeoftheweb/salvo/models/Ship.java
  com.codeoftheweb.salvo.models.Ship
 com/codeoftheweb/salvo/models/Player.java
  com.codeoftheweb.salvo.models.Player
-com/codeoftheweb/salvo/repository/PlayerRepository.java
- com.codeoftheweb.salvo.repository.PlayerRepository
 com/codeoftheweb/salvo/models/GamePlayer.java
  com.codeoftheweb.salvo.models.GamePlayer
 com/codeoftheweb/salvo/controller/SalvoController.java

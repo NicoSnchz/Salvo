@@ -135,8 +135,8 @@ public class SalvoApplication {
 			//Scores Repository save
 			scoreRepository.save(score1);
 			scoreRepository.save(score2);
-			scoreRepository.save(score3);
-			scoreRepository.save(score4);
+			//scoreRepository.save(score3);
+			//scoreRepository.save(score4);
 		};
 	}
 }
