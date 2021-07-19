@@ -7,7 +7,6 @@ import com.codeoftheweb.salvo.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +67,50 @@ public class SalvoController {
             return new ResponseEntity<>(Util.makeMap("OK", "Ships placed"),HttpStatus.CREATED);
         }
     }
+
+    @PostMapping("/games/players/{gpid}/salvoes")
+    public ResponseEntity<Object> saveSalvoes(@PathVariable Long gpid, @RequestBody Salvo salvo, Authentication authentication){
+        GamePlayer gamePlayer = gamePlayerRepo.findById(gpid).orElse(null);
+
+
+        if (Util.isGuest(authentication)){
+            return new ResponseEntity<>(Util.makeMap("error", "User not logged"), HttpStatus.UNAUTHORIZED);
+        }
+
+        Player player = playerRepository.findByUserName(authentication.getName());
+
+        if (gamePlayer == null){
+            return new ResponseEntity<>(Util.makeMap("error", "No such Gameplayer"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (!gamePlayer.getPlayer().getId().equals(player.getId())){
+            return new ResponseEntity<>(Util.makeMap("error", "Player do not match Gameplayer"), HttpStatus.UNAUTHORIZED);
+        }
+
+        GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
+
+        if (opponent == null){
+            return new ResponseEntity<>(Util.makeMap("error", "There's no opponent"), HttpStatus.FORBIDDEN);
+        }
+
+        if (gamePlayer.getSalvoes().size() != opponent.getSalvoes().size() && gamePlayer.getSalvoes().size() > opponent.getSalvoes().size()){
+            return new ResponseEntity<>(Util.makeMap("error", "Salvoes already submitted for turn "+ gamePlayer.getSalvoes().size()), HttpStatus.FORBIDDEN);
+        }
+
+        if (salvo.getSalvoLocations().size() == 0){
+            return new ResponseEntity<>(Util.makeMap("error", "Must fire at least 1 salvo"), HttpStatus.FORBIDDEN);
+        }
+        if (salvo.getSalvoLocations().size() > 5){
+            return new ResponseEntity<>(Util.makeMap("error", "Only can fire 5 salvoes in a turn"), HttpStatus.FORBIDDEN);
+        }
+
+        Integer salvoTurn = gamePlayer.getSalvoes().size() + 1;
+
+        salvoRepo.save(new Salvo(gamePlayer, salvo.getSalvoLocations(), salvoTurn));
+
+        return new ResponseEntity<>(Util.makeMap("OK", "Salvo fired!"),HttpStatus.CREATED);
+    }
+
 
     //Registro de nuevo player, con sus response entity
     @PostMapping("/players")
@@ -149,8 +192,12 @@ public class SalvoController {
     //Mostrar la game view de un Player
     @GetMapping("/game_view/{id}")
     public ResponseEntity<?>  getGamePlayerId(@PathVariable Long id, Authentication authentication){
-        GamePlayer gamePlayer = gamePlayerRepo.findById(id).get();
+        GamePlayer gamePlayer = gamePlayerRepo.findById(id).orElse(null);
         Player player = playerRepository.findByUserName(authentication.getName());
+
+        if (gamePlayer == null){
+            return new ResponseEntity<>(Util.makeMap("error", "there's not such Gameplayer"), HttpStatus.NOT_FOUND);
+        }
 
         if (player.getId().equals(gamePlayer.getPlayer().getId())){ //Compara si son iguales la id del player con la id del player dentro de gamePlayer
             return new ResponseEntity<>(new GameViewDTO(gamePlayer), HttpStatus.OK);
