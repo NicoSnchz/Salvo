@@ -38,7 +38,8 @@ public class SalvoController {
     @Autowired
     private ShipRepository shipRepository;
 
-    //Recibe una lista de ships objects y la guarda
+    /**  Recibe una lista de ships objects y la guarda */
+
     @PostMapping("/games/players/{gpid}/ships")
     public ResponseEntity<Object> saveShips(@PathVariable Long gpid, @RequestBody Set<Ship> ships, Authentication authentication){
         GamePlayer gamePlayer = gamePlayerRepo.findById(gpid).orElse(null);
@@ -57,16 +58,27 @@ public class SalvoController {
         }
 
         Set<Ship> shipSet = gamePlayer.getShips();
-
+        //Chequea si ya tiene barcos ubicados
         if (shipSet.size() == 5){
             return new ResponseEntity<>(Util.makeMap("error", "Ships already Located"), HttpStatus.FORBIDDEN);
-        }else {
-            for (Ship ship:ships){
-                shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getShipLocations()));
-            }
-            return new ResponseEntity<>(Util.makeMap("OK", "Ships placed"),HttpStatus.CREATED);
         }
+
+        //Chequea que solo ubique 5 barcos
+        if(ships.size() < 5){
+            return new ResponseEntity<>(Util.makeMap("error", "Must place 5 ships"), HttpStatus.FORBIDDEN);
+        }
+        //Chequea si no ubique mas de 5 barcos
+        if(ships.size() > 5){
+            return new ResponseEntity<>(Util.makeMap("error", "Can only place 5 ships"), HttpStatus.FORBIDDEN);
+        }
+
+        for (Ship ship:ships){
+            shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getShipLocations()));
+        }
+        return new ResponseEntity<>(Util.makeMap("OK", "Ships placed"),HttpStatus.CREATED);
+
     }
+    /** Recibe una lista de disparos y la gurda */
 
     @PostMapping("/games/players/{gpid}/salvoes")
     public ResponseEntity<Object> saveSalvoes(@PathVariable Long gpid, @RequestBody Salvo salvo, Authentication authentication){
@@ -112,7 +124,8 @@ public class SalvoController {
     }
 
 
-    //Registro de nuevo player, con sus response entity
+    /** Registro de nuevo player, con sus response entity */
+
     @PostMapping("/players")
     public ResponseEntity<Object> register(@RequestParam String email, @RequestParam String password){
         if (email.isEmpty()){
@@ -131,7 +144,8 @@ public class SalvoController {
         return new ResponseEntity<>(Util.makeMap("name", newPlayer.getUserName()), HttpStatus.CREATED);
     }
 
-    //Unirse a una partida
+    /** Unirse a una partida */
+
     @PostMapping("/game/{id}/players")
     public ResponseEntity<Object> joinGame(@PathVariable Long id, Authentication authentication){
         Optional<Game> game = gameRepo.findById(id);
@@ -159,7 +173,8 @@ public class SalvoController {
         }
     }
 
-    //Mostrar todos los juegos
+    /** Mostrar todos los juegos */
+
     @GetMapping("/games")
     public Map<String, Object> getGames(Authentication authentication) {
         List<Game> gameList = gameRepo.findAll();
@@ -176,7 +191,8 @@ public class SalvoController {
         return dto;
     }
 
-    //Crear una partida
+    /** Crear una partida */
+
     @PostMapping("/games")
     public ResponseEntity<Object> createGame(Authentication authentication){
         if (Util.isGuest(authentication)){
@@ -189,7 +205,8 @@ public class SalvoController {
         }
     }
 
-    //Mostrar la game view de un Player
+    /** Mostrar la game view de un Player */
+
     @GetMapping("/game_view/{id}")
     public ResponseEntity<?>  getGamePlayerId(@PathVariable Long id, Authentication authentication){
         GamePlayer gamePlayer = gamePlayerRepo.findById(id).orElse(null);

@@ -1,8 +1,5 @@
 package com.codeoftheweb.salvo.utilities;
 
-import com.codeoftheweb.salvo.models.Player;
-import com.codeoftheweb.salvo.repository.PlayerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
