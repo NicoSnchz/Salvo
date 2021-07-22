@@ -1,32 +1,36 @@
 package com.codeoftheweb.salvo.dtos;
 
+import com.codeoftheweb.salvo.models.GamePlayer;
+import com.codeoftheweb.salvo.models.Salvo;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HitsDTO {
 
-    private List<String> self;
+    private List<HitRecordDTO> self;
 
-    private List<String> opponent;
+    private List<HitRecordDTO> opponent;
 
-    public HitsDTO(){
-        this.self = new ArrayList<>();
-        this.opponent = new ArrayList<>();
+    public HitsDTO(GamePlayer gamePlayer){
+        this.self = gamePlayer.getOpponent(gamePlayer).get().getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toList());
+        this.opponent = gamePlayer.getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toList());
     }
 
-    public List<String> getSelf() {
+    public List<HitRecordDTO> getSelf() {
         return self;
     }
 
-    public void setSelf(List<String> self) {
+    public void setSelf(List<HitRecordDTO> self) {
         this.self = self;
     }
 
-    public List<String> getOpponent() {
+    public List<HitRecordDTO> getOpponent() {
         return opponent;
     }
 
-    public void setOpponent(List<String> opponent) {
+    public void setOpponent(List<HitRecordDTO>  opponent) {
         this.opponent = opponent;
     }
 }

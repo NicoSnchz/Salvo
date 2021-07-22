@@ -11,6 +11,9 @@ public class PlayerDTO {
 
     private String email;
 
+    public PlayerDTO() {
+    }
+
     public PlayerDTO(Player player) {
         this.id = player.getId();
         this.email = player.getUserName();

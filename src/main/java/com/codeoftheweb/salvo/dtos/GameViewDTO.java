@@ -21,7 +21,7 @@ public class GameViewDTO {
     public GameViewDTO(GamePlayer gamePlayer) {
         this.id = gamePlayer.getGame().getGameId();
         this.created = gamePlayer.getGame().getGameStartDate();
-        this.gameState = "PLACESHIPS";
+        this.gameState = "PLAY";
         this.gamePlayers = gamePlayer.getGame().getGamePlayers()
                                                             .stream()
                                                             .map(GamePlayerDTO::new)
@@ -30,11 +30,12 @@ public class GameViewDTO {
                                 .stream()
                                 .map(ShipDTO::new)
                                 .collect(Collectors.toSet());
+
         this.salvoes = gamePlayer.getGame().getGamePlayers()
                                                 .stream()
                                                 .flatMap(x -> x.getSalvoes().stream().map(SalvoesDTO::new))
                                                 .collect(Collectors.toSet());
-        this.hits = new HitsDTO();
+        this.hits = new HitsDTO(gamePlayer);
     }
 
     public Long getId() {

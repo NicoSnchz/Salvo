@@ -8,6 +8,9 @@ public class ShipDTO {
     private String type;
     private List<String> locations;
 
+    public ShipDTO() {
+    }
+
     public ShipDTO(Ship ship){
         this.type = ship.getType();
         this.locations = ship.getShipLocations();

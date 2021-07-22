@@ -86,14 +86,18 @@ public class SalvoApplication {
 			gamePlayerRepository.save(gamePlayer4);
 
 			//Ships: GamePlayer, Type of ship, Locations of the ship in the board.
-			Ship ship1 = new Ship(gamePlayer1, "Carrier", List.of("B5", "B6", "B7", "B8", "B9"));
-			Ship ship2 = new Ship(gamePlayer1, "Submarine", List.of("F3", "G3", "H3"));
-			Ship ship3 = new Ship(gamePlayer2, "Carrier", List.of("G1", "G2", "G3", "G4", "G5"));
-			Ship ship4 = new Ship(gamePlayer2, "Submarine", List.of("J9", "I9", "H9"));
-			Ship ship5 = new Ship(gamePlayer3, "Patrol Boat", List.of("J2", "I2"));
-			Ship ship6 = new Ship(gamePlayer3, "Submarine", List.of("A1", "B1", "C1"));
-			Ship ship7 = new Ship(gamePlayer4, "Battleship", List.of("H1", "H2", "H3", "H4"));
-			Ship ship8 = new Ship(gamePlayer4, "Destroyer", List.of("J1", "J2", "J3"));
+			Ship ship1 = new Ship(gamePlayer1, "carrier", List.of("I4", "I5", "I6", "I7", "I8"));
+			Ship ship2 = new Ship(gamePlayer1, "battleship", List.of("B6", "B7", "B8", "B9"));
+			Ship ship3 = new Ship(gamePlayer1, "patrolboat", List.of("B2", "C2"));
+			Ship ship4 = new Ship(gamePlayer1, "destroyer", List.of("D8", "E8", "F8"));
+			Ship ship5 = new Ship(gamePlayer1, "submarine", List.of("F2", "F3", "F4"));
+
+			Ship ship6 = new Ship(gamePlayer2, "carrier", List.of("I4", "I5", "I6", "I7", "I8"));
+			Ship ship7 = new Ship(gamePlayer2, "battleship", List.of("B6", "B7", "B8", "B9"));
+			Ship ship8 = new Ship(gamePlayer2, "patrolboat", List.of("B2", "C2"));
+			Ship ship9 = new Ship(gamePlayer2, "destroyer", List.of("D8", "E8", "F8"));
+			Ship ship10 = new Ship(gamePlayer2, "submarine", List.of("F2", "F3", "F4"));
+
 			//Ship Repository save
 			shipRepository.save(ship1);
 			shipRepository.save(ship2);
@@ -103,13 +107,15 @@ public class SalvoApplication {
 			shipRepository.save(ship6);
 			shipRepository.save(ship7);
 			shipRepository.save(ship8);
+			shipRepository.save(ship9);
+			shipRepository.save(ship10);
 
 			//Salvoes: GamePlayer, Location of de Salvo, turn.
-			Salvo salvo1 = new Salvo(gamePlayer1, List.of("D3", "B5", "C3"), 1);
+			Salvo salvo1 = new Salvo(gamePlayer1, List.of("B2", "B3", "A1"), 1); //hit patrolboat del gameplayer 2
 			Salvo salvo2 = new Salvo(gamePlayer1, List.of("G2", "E7", "G1"), 2);
-			Salvo salvo3 = new Salvo(gamePlayer1, List.of("H6","J6","A1"), 3);
-			Salvo salvo4 = new Salvo(gamePlayer2, List.of("E9", "C2", "E1"), 1);
-			Salvo salvo5 = new Salvo(gamePlayer2, List.of("B5", "B6", "B7"), 2);
+			Salvo salvo3 = new Salvo(gamePlayer1, List.of("H6","J6","C2"), 3); //hunde patrolboat del gameplayer 2
+			Salvo salvo4 = new Salvo(gamePlayer2, List.of("D8", "E8", "F8"), 1); //Hunde destroyer del gameplayer 1
+			Salvo salvo5 = new Salvo(gamePlayer2, List.of("B5", "B6", "B7"), 2); //2 Hits en battleship gameplayer 1
 			Salvo salvo6 = new Salvo(gamePlayer2, List.of("J1", "J2", "J3"), 3);
 			Salvo salvo7 = new Salvo(gamePlayer3, List.of("E9", "C2", "E1"), 1);
 			Salvo salvo8 = new Salvo(gamePlayer3, List.of("B5", "B6", "B7"), 2);

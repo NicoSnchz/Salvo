@@ -17,6 +17,9 @@ public class GamesDTO {
 
     private Set<ScoreDTO> scores;
 
+    public GamesDTO() {
+    }
+
     public GamesDTO(Game game) {
         this.id = game.getGameId();
         this.created = game.getGameStartDate();

@@ -9,6 +9,9 @@ public class SalvoesDTO {
     private Long player;
     private List<String> locations;
 
+    public SalvoesDTO() {
+    }
+
     public SalvoesDTO(Salvo salvo){
         this.turn = salvo.getTurn();
         this.player = salvo.getGamePlayer().getPlayer().getId();

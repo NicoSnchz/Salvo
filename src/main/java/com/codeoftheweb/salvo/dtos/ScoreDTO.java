@@ -14,6 +14,9 @@ public class ScoreDTO {
 
     private LocalDateTime finishDate;
 
+    public ScoreDTO() {
+    }
+
     public ScoreDTO(GamePlayer gamePlayer) {
         if (gamePlayer.getScore().isPresent()) {
             this.player = gamePlayer.getPlayer().getId();
