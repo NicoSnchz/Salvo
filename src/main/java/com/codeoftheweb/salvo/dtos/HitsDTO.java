@@ -15,14 +15,13 @@ public class HitsDTO {
 
     private Set<HitRecordDTO> opponent;
 
-    public HitsDTO(GamePlayer gamePlayer){
-        if (gamePlayer.getOpponent(gamePlayer).isPresent()){
-            this.self = gamePlayer.getOpponent(gamePlayer).get().getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toSet());
-            this.opponent = gamePlayer.getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toSet());
-        }else{
-            this.self = new HashSet<>();
-            this.opponent = new HashSet<>();
-        }
+    public HitsDTO() {
+
+    }
+
+    public HitsDTO(Set<HitRecordDTO> self, Set<HitRecordDTO> opponent) {
+        this.self = self;
+        this.opponent = opponent;
     }
 
     public Set<HitRecordDTO> getSelf() {

@@ -1,30 +1,21 @@
 package com.codeoftheweb.salvo.dtos;
 
-import com.codeoftheweb.salvo.models.GamePlayer;
-import com.codeoftheweb.salvo.models.Salvo;
-import com.codeoftheweb.salvo.models.Ship;
-import com.codeoftheweb.salvo.utilities.Util;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class HitRecordDTO {
     private Integer turn;
     private List<String> hitLocations;
-    private damagesDTO damages;
+    private DamagesDTO damages;
     private Long missed;
 
     public HitRecordDTO() {
     }
 
-    public HitRecordDTO(Salvo salvo){
-        this.turn = salvo.getTurn();
-        this.hitLocations = Util.hits(salvo);
-        this.damages = new damagesDTO(salvo);
-        this.missed = Util.missed(salvo);
+    public HitRecordDTO(Integer turn, List<String> hitLocations, DamagesDTO damages, Long missed) {
+        this.turn = turn;
+        this.hitLocations = hitLocations;
+        this.damages = damages;
+        this.missed = missed;
     }
 
     public Integer getTurn() {
@@ -43,11 +34,11 @@ public class HitRecordDTO {
         this.hitLocations = hitLocations;
     }
 
-    public damagesDTO getDamages() {
+    public DamagesDTO getDamages() {
         return damages;
     }
 
-    public void setDamages(damagesDTO damages) {
+    public void setDamages(DamagesDTO damages) {
         this.damages = damages;
     }
 

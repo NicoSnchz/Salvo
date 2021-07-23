@@ -1,9 +1,10 @@
-package com.codeoftheweb.salvo.services;
+package com.codeoftheweb.salvo.services.implement;
 
 import com.codeoftheweb.salvo.dtos.*;
 import com.codeoftheweb.salvo.models.GamePlayer;
 import com.codeoftheweb.salvo.models.Salvo;
 import com.codeoftheweb.salvo.models.Ship;
+import com.codeoftheweb.salvo.services.GameService;
 import com.codeoftheweb.salvo.utilities.GameState;
 import com.codeoftheweb.salvo.utilities.Util;
 import org.springframework.stereotype.Service;
@@ -116,21 +117,13 @@ public class GameServiceImpl implements GameService {
     }
 
     public HitRecordDTO makeHitsDTO (Salvo salvo){
-        GamePlayer gamePlayer = salvo.getGamePlayer();
-        GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
-
-        List<String> opponentShips = opponent.getShips().stream().flatMap(ship -> ship.getShipLocations().stream()).collect(Collectors.toList());
-        List<String> salvoLocations = salvo.getSalvoLocations();
-        List<String> hitLocations = salvoLocations.stream().filter(opponentShips::contains).collect(Collectors.toList());
-
-        Long missed = salvoLocations.stream().filter(s -> !opponentShips.contains(s)).count();
 
         HitRecordDTO hitRecordDTO = new HitRecordDTO();
 
         hitRecordDTO.setTurn(salvo.getTurn());
-        hitRecordDTO.setHitLocations(hitLocations);
+        hitRecordDTO.setHitLocations(Util.hits(salvo));
         hitRecordDTO.setDamages(makeDamageDTO(salvo));
-        hitRecordDTO.setMissed(missed);
+        hitRecordDTO.setMissed(Util.missed(salvo));
 
         return hitRecordDTO;
     }
@@ -162,16 +155,13 @@ public class GameServiceImpl implements GameService {
                 .map(ShipDTO::new)
                 .collect(Collectors.toSet()));
 
-        if (gamePlayer.getOpponent(gamePlayer).isEmpty()){
-            gameViewDTO.setSalvoes(gamePlayer.getGame().getGamePlayers()
-                    .stream()
-                    .flatMap(gamePlayer1 -> gamePlayer1.getSalvoes()
-                            .stream()
-                            .map(SalvoesDTO::new))
-                    .collect(Collectors.toSet()));
-        }else {
-            gameViewDTO.setSalvoes(new HashSet<>());
-        }
+        gameViewDTO.setSalvoes(gamePlayer.getGame().getGamePlayers()
+                .stream()
+                .flatMap(gamePlayer1 -> gamePlayer1.getSalvoes()
+                        .stream()
+                        .map(SalvoesDTO::new))
+                .collect(Collectors.toSet()));
+
         gameViewDTO.setHits(hitsDTO);
 
         return gameViewDTO;

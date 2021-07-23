@@ -9,14 +9,27 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class damagesDTO {
+public class DamagesDTO {
     private Long carrierHits, battleshipHits, destroyerHits, patrolboatHits, submarineHits;
     private Long carrier, battleship, submarine, destroyer, patrolboat;
 
-    public damagesDTO() {
+    public DamagesDTO() {
     }
 
-    public damagesDTO(Salvo salvo){
+    public DamagesDTO(Long carrierHits, Long battleshipHits, Long destroyerHits, Long patrolboatHits, Long submarineHits, Long carrier, Long battleship, Long submarine, Long destroyer, Long patrolboat) {
+        this.carrierHits = carrierHits;
+        this.battleshipHits = battleshipHits;
+        this.destroyerHits = destroyerHits;
+        this.patrolboatHits = patrolboatHits;
+        this.submarineHits = submarineHits;
+        this.carrier = carrier;
+        this.battleship = battleship;
+        this.submarine = submarine;
+        this.destroyer = destroyer;
+        this.patrolboat = patrolboat;
+    }
+
+    /* public DamagesDTO(Salvo salvo){
         GamePlayer gamePlayer = salvo.getGamePlayer();
         GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
 
@@ -61,7 +74,7 @@ public class damagesDTO {
             this.destroyer = destroyerTotalDmg;
             this.submarine = submarineTotalDmg;
         }
-    }
+    }*/
 
     public Long getCarrierHits() {
         return carrierHits;

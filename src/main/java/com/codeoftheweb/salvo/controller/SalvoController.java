@@ -3,6 +3,7 @@ package com.codeoftheweb.salvo.controller;
 import com.codeoftheweb.salvo.dtos.*;
 import com.codeoftheweb.salvo.models.*;
 import com.codeoftheweb.salvo.repository.*;
+import com.codeoftheweb.salvo.services.GameService;
 import com.codeoftheweb.salvo.utilities.GameState;
 import com.codeoftheweb.salvo.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,10 @@ public class SalvoController {
 
     @Autowired
     private ScoreRepository scoreRepository;
+
+    @Autowired
+    private GameService gameService;
+
 
     /**  Recibe una lista de ships objects y la guarda */
 
@@ -227,7 +232,7 @@ public class SalvoController {
 
         //hacer toda la estructura de los if
 
-        if (Util.getGameState(gamePlayer).equals(GameState.WON.name())){
+        if (gameService.getGameState(gamePlayer).equals(GameState.WON.name())){
             if (gamePlayer.getGame().getScores().size() < 2){
                 Set<Score> scores = new HashSet<>();
                 Score score1 = new Score();
@@ -247,7 +252,7 @@ public class SalvoController {
                 gamePlayer.getGame().setScores(scores);
             }
         }
-        if (Util.getGameState(gamePlayer).equals(GameState.TIE.name())){
+        if (gameService.getGameState(gamePlayer).equals(GameState.TIE.name())){
             if (gamePlayer.getGame().getScores().size() < 2){
                 Set<Score> scores = new HashSet<>();
                 Score score1 = new Score();
@@ -257,10 +262,10 @@ public class SalvoController {
                 score1.setScore(0.5F);
                 scoreRepository.save(score1);
                 Score score2 = new Score();
-                score1.setGame(gamePlayer.getGame());
-                score1.setPlayer(gamePlayer.getOpponent(gamePlayer).get().getPlayer());
-                score1.setFinishDate(LocalDateTime.now());
-                score1.setScore(0.5F);
+                score2.setGame(gamePlayer.getGame());
+                score2.setPlayer(gamePlayer.getOpponent(gamePlayer).get().getPlayer());
+                score2.setFinishDate(LocalDateTime.now());
+                score2.setScore(0.5F);
                 scoreRepository.save(score2);
                 scores.add(score1);
                 scores.add(score2);
@@ -268,8 +273,10 @@ public class SalvoController {
             }
         }
 
+        GameViewDTO gameViewDTO = gameService.makeGameViewDTO(gamePlayer);
+
         if (player.getId().equals(gamePlayer.getPlayer().getId())){ //Compara si son iguales la id del player con la id del player dentro de gamePlayer
-            return new ResponseEntity<>(new GameViewDTO(gamePlayer), HttpStatus.OK);
+            return new ResponseEntity<>(gameViewDTO, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(Util.makeMap("error", "Unauthorized access"), HttpStatus.UNAUTHORIZED);
         }

@@ -21,31 +21,30 @@ public class GameViewDTO {
     private Set<SalvoesDTO> salvoes;
     private HitsDTO hits;
 
-    public GameViewDTO(GamePlayer gamePlayer) {
+    public GameViewDTO() {
 
-        this.id = gamePlayer.getGame().getGameId();
-        this.created = gamePlayer.getGame().getGameStartDate();
-        this.gameState = Util.getGameState(gamePlayer);
-        this.gamePlayers = gamePlayer.getGame().getGamePlayers()
-                                                            .stream()
-                                                            .map(GamePlayerDTO::new)
-                                                            .collect(Collectors.toSet());
-        this.ships = gamePlayer.getShips()
-                                .stream()
-                                .map(ShipDTO::new)
-                                .collect(Collectors.toSet());
-
-        if (gamePlayer.getOpponent(gamePlayer).isEmpty()){
-            this.salvoes = new HashSet<>();
-        }else{
-            this.salvoes = gamePlayer.getGame().getGamePlayers()
-                    .stream()
-                    .flatMap(x -> x.getSalvoes().stream().map(SalvoesDTO::new))
-                    .collect(Collectors.toSet());
-
-        }
-        this.hits = new HitsDTO(gamePlayer);
     }
+
+    public GameViewDTO(Long id, LocalDateTime created, String gameState, Set<GamePlayerDTO> gamePlayers, Set<ShipDTO> ships, Set<SalvoesDTO> salvoes, HitsDTO hits) {
+        this.id = id;
+        this.created = created;
+        this.gameState = gameState;
+        this.gamePlayers = gamePlayers;
+        this.ships = ships;
+        this.salvoes = salvoes;
+        this.hits = hits;
+    }
+
+    public GameViewDTO(LocalDateTime created, String gameState, Set<GamePlayerDTO> gamePlayers, Set<ShipDTO> ships, Set<SalvoesDTO> salvoes, HitsDTO hits) {
+        this.created = created;
+        this.gameState = gameState;
+        this.gamePlayers = gamePlayers;
+        this.ships = ships;
+        this.salvoes = salvoes;
+        this.hits = hits;
+    }
+
+
 
     public Long getId() {
         return id;
@@ -102,4 +101,5 @@ public class GameViewDTO {
     public void setHits(HitsDTO hits) {
         this.hits = hits;
     }
+
 }
