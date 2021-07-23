@@ -3,8 +3,11 @@ package com.codeoftheweb.salvo.dtos;
 import com.codeoftheweb.salvo.models.Game;
 import com.codeoftheweb.salvo.models.GamePlayer;
 import com.codeoftheweb.salvo.models.Ship;
+import com.codeoftheweb.salvo.utilities.Util;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,9 +22,10 @@ public class GameViewDTO {
     private HitsDTO hits;
 
     public GameViewDTO(GamePlayer gamePlayer) {
+
         this.id = gamePlayer.getGame().getGameId();
         this.created = gamePlayer.getGame().getGameStartDate();
-        this.gameState = "PLAY";
+        this.gameState = Util.getGameState(gamePlayer);
         this.gamePlayers = gamePlayer.getGame().getGamePlayers()
                                                             .stream()
                                                             .map(GamePlayerDTO::new)
@@ -31,10 +35,15 @@ public class GameViewDTO {
                                 .map(ShipDTO::new)
                                 .collect(Collectors.toSet());
 
-        this.salvoes = gamePlayer.getGame().getGamePlayers()
-                                                .stream()
-                                                .flatMap(x -> x.getSalvoes().stream().map(SalvoesDTO::new))
-                                                .collect(Collectors.toSet());
+        if (gamePlayer.getOpponent(gamePlayer).isEmpty()){
+            this.salvoes = new HashSet<>();
+        }else{
+            this.salvoes = gamePlayer.getGame().getGamePlayers()
+                    .stream()
+                    .flatMap(x -> x.getSalvoes().stream().map(SalvoesDTO::new))
+                    .collect(Collectors.toSet());
+
+        }
         this.hits = new HitsDTO(gamePlayer);
     }
 

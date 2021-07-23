@@ -44,7 +44,6 @@ public class Game {
     }
 
     //GETTER
-    @JsonIgnore
     public List<Player> getPlayers() {
         return gamePlayers.stream().map(GamePlayer::getPlayer).collect(toList());
     }
@@ -68,5 +67,13 @@ public class Game {
     //SETTER
     public void setGameStartDate(LocalDateTime gameStartDate) {
         this.gameStartDate = gameStartDate;
+    }
+
+    public void setGamePlayers(Set<GamePlayer> gamePlayers) {
+        this.gamePlayers = gamePlayers;
+    }
+
+    public void setScores(Set<Score> scores) {
+        this.scores = scores;
     }
 }

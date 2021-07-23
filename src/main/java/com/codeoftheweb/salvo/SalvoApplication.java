@@ -111,16 +111,17 @@ public class SalvoApplication {
 			shipRepository.save(ship10);
 
 			//Salvoes: GamePlayer, Location of de Salvo, turn.
-			Salvo salvo1 = new Salvo(gamePlayer1, List.of("B2", "B3", "A1"), 1); //hit patrolboat del gameplayer 2
-			Salvo salvo2 = new Salvo(gamePlayer1, List.of("G2", "E7", "G1"), 2);
-			Salvo salvo3 = new Salvo(gamePlayer1, List.of("H6","J6","C2"), 3); //hunde patrolboat del gameplayer 2
-			Salvo salvo4 = new Salvo(gamePlayer2, List.of("D8", "E8", "F8"), 1); //Hunde destroyer del gameplayer 1
-			Salvo salvo5 = new Salvo(gamePlayer2, List.of("B5", "B6", "B7"), 2); //2 Hits en battleship gameplayer 1
-			Salvo salvo6 = new Salvo(gamePlayer2, List.of("J1", "J2", "J3"), 3);
-			Salvo salvo7 = new Salvo(gamePlayer3, List.of("E9", "C2", "E1"), 1);
-			Salvo salvo8 = new Salvo(gamePlayer3, List.of("B5", "B6", "B7"), 2);
-			Salvo salvo9 = new Salvo(gamePlayer4, List.of("E9", "C2", "E1"), 1);
-			Salvo salvo0 = new Salvo(gamePlayer4, List.of("B5", "B6", "B7"), 2);
+			Salvo salvo1 = new Salvo(gamePlayer1, List.of("B2", "C2", "D8","E8", "F8"), 1); //PATROLBOAT - DESTROYER
+			Salvo salvo2 = new Salvo(gamePlayer1, List.of("I4", "I5", "I6", "I7", "I8"), 2); // CARRIER
+			Salvo salvo3 = new Salvo(gamePlayer1, List.of("F2","F3","F4","B6" ,"B7"), 3); //SUBMARINE - BATTLESHIP
+			Salvo salvo4 = new Salvo(gamePlayer1, List.of("B8"), 4); //BATTLESHIP A 1 HIT
+			Salvo salvo5 = new Salvo(gamePlayer2, List.of("B2", "C2", "D8","E8", "F8"), 1); //Hunde destroyer del gameplayer 1
+			Salvo salvo6 = new Salvo(gamePlayer2, List.of("I4", "I5", "I6", "I7", "I8"), 2); //2 Hits en battleship gameplayer 1
+			Salvo salvo7 = new Salvo(gamePlayer2, List.of("F2","F3","F4","B6" ,"B7"), 3);
+			Salvo salvo8 = new Salvo(gamePlayer2, List.of("B8"), 4);
+			Salvo salvo9 = new Salvo(gamePlayer3, List.of("B5", "B6", "B7"), 2);
+			Salvo salvo0 = new Salvo(gamePlayer4, List.of("E9", "C2", "E1"), 1);
+			Salvo salvo11 = new Salvo(gamePlayer4, List.of("B5", "B6", "B7"), 2);
 			//Salvoes Repository save
 			salvoRepository.save(salvo1);
 			salvoRepository.save(salvo2);
@@ -132,6 +133,7 @@ public class SalvoApplication {
 			salvoRepository.save(salvo8);
 			salvoRepository.save(salvo9);
 			salvoRepository.save(salvo0);
+			salvoRepository.save(salvo11);
 
 			//Scores:
 			Score score1 = new Score(player1, game1, 1f, LocalDateTime.now().plusMinutes(30L));
@@ -139,8 +141,8 @@ public class SalvoApplication {
 			Score score3 = new Score(player3, game2, .5f, LocalDateTime.now().plusMinutes(30L));
 			Score score4 = new Score(player4, game2, .5f, LocalDateTime.now().plusMinutes(30L));
 			//Scores Repository save
-			scoreRepository.save(score1);
-			scoreRepository.save(score2);
+			//scoreRepository.save(score1);
+			//scoreRepository.save(score2);
 			//scoreRepository.save(score3);
 			//scoreRepository.save(score4);
 		};

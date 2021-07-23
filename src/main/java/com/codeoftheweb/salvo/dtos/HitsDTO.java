@@ -4,33 +4,40 @@ import com.codeoftheweb.salvo.models.GamePlayer;
 import com.codeoftheweb.salvo.models.Salvo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class HitsDTO {
 
-    private List<HitRecordDTO> self;
+    private Set<HitRecordDTO> self;
 
-    private List<HitRecordDTO> opponent;
+    private Set<HitRecordDTO> opponent;
 
     public HitsDTO(GamePlayer gamePlayer){
-        this.self = gamePlayer.getOpponent(gamePlayer).get().getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toList());
-        this.opponent = gamePlayer.getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toList());
+        if (gamePlayer.getOpponent(gamePlayer).isPresent()){
+            this.self = gamePlayer.getOpponent(gamePlayer).get().getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toSet());
+            this.opponent = gamePlayer.getSalvoes().stream().map(HitRecordDTO::new).collect(Collectors.toSet());
+        }else{
+            this.self = new HashSet<>();
+            this.opponent = new HashSet<>();
+        }
     }
 
-    public List<HitRecordDTO> getSelf() {
+    public Set<HitRecordDTO> getSelf() {
         return self;
     }
 
-    public void setSelf(List<HitRecordDTO> self) {
+    public void setSelf(Set<HitRecordDTO> self) {
         this.self = self;
     }
 
-    public List<HitRecordDTO> getOpponent() {
+    public Set<HitRecordDTO> getOpponent() {
         return opponent;
     }
 
-    public void setOpponent(List<HitRecordDTO>  opponent) {
+    public void setOpponent(Set<HitRecordDTO>  opponent) {
         this.opponent = opponent;
     }
 }

@@ -3,6 +3,7 @@ package com.codeoftheweb.salvo.controller;
 import com.codeoftheweb.salvo.dtos.*;
 import com.codeoftheweb.salvo.models.*;
 import com.codeoftheweb.salvo.repository.*;
+import com.codeoftheweb.salvo.utilities.GameState;
 import com.codeoftheweb.salvo.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,9 @@ public class SalvoController {
     @Autowired
     private ShipRepository shipRepository;
 
+    @Autowired
+    private ScoreRepository scoreRepository;
+
     /**  Recibe una lista de ships objects y la guarda */
 
     @PostMapping("/games/players/{gpid}/ships")
@@ -58,6 +62,7 @@ public class SalvoController {
         }
 
         Set<Ship> shipSet = gamePlayer.getShips();
+
         //Chequea si ya tiene barcos ubicados
         if (shipSet.size() == 5){
             return new ResponseEntity<>(Util.makeMap("error", "Ships already Located"), HttpStatus.FORBIDDEN);
@@ -76,7 +81,6 @@ public class SalvoController {
             shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getShipLocations()));
         }
         return new ResponseEntity<>(Util.makeMap("OK", "Ships placed"),HttpStatus.CREATED);
-
     }
     /** Recibe una lista de disparos y la gurda */
 
@@ -221,43 +225,53 @@ public class SalvoController {
             return new ResponseEntity<>(Util.makeMap("error", "there's not such Gameplayer"), HttpStatus.NOT_FOUND);
         }
 
+        //hacer toda la estructura de los if
+
+        if (Util.getGameState(gamePlayer).equals(GameState.WON.name())){
+            if (gamePlayer.getGame().getScores().size() < 2){
+                Set<Score> scores = new HashSet<>();
+                Score score1 = new Score();
+                score1.setGame(gamePlayer.getGame());
+                score1.setPlayer(gamePlayer.getPlayer());
+                score1.setFinishDate(LocalDateTime.now());
+                score1.setScore(1F);
+                scoreRepository.save(score1);
+                Score score2 = new Score();
+                score2.setGame(gamePlayer.getGame());
+                score2.setPlayer(gamePlayer.getOpponent(gamePlayer).get().getPlayer());
+                score2.setFinishDate(LocalDateTime.now());
+                score2.setScore(0F);
+                scoreRepository.save(score2);
+                scores.add(score1);
+                scores.add(score2);
+                gamePlayer.getGame().setScores(scores);
+            }
+        }
+        if (Util.getGameState(gamePlayer).equals(GameState.TIE.name())){
+            if (gamePlayer.getGame().getScores().size() < 2){
+                Set<Score> scores = new HashSet<>();
+                Score score1 = new Score();
+                score1.setGame(gamePlayer.getGame());
+                score1.setPlayer(gamePlayer.getPlayer());
+                score1.setFinishDate(LocalDateTime.now());
+                score1.setScore(0.5F);
+                scoreRepository.save(score1);
+                Score score2 = new Score();
+                score1.setGame(gamePlayer.getGame());
+                score1.setPlayer(gamePlayer.getOpponent(gamePlayer).get().getPlayer());
+                score1.setFinishDate(LocalDateTime.now());
+                score1.setScore(0.5F);
+                scoreRepository.save(score2);
+                scores.add(score1);
+                scores.add(score2);
+                gamePlayer.getGame().setScores(scores);
+            }
+        }
+
         if (player.getId().equals(gamePlayer.getPlayer().getId())){ //Compara si son iguales la id del player con la id del player dentro de gamePlayer
             return new ResponseEntity<>(new GameViewDTO(gamePlayer), HttpStatus.OK);
         }else{
             return new ResponseEntity<>(Util.makeMap("error", "Unauthorized access"), HttpStatus.UNAUTHORIZED);
         }
     }
-
-    /* private Map<String, Object> hitRecords(GamePlayer gamePlayer){
-        Map<String, Object> dto = new LinkedHashMap<>();
-        Optional<Salvo> salvo = gamePlayer.getSalvoes().stream().filter(s -> s.getTurn() == gamePlayer.getSalvoes().size()).findFirst();
-
-        dto.put("turn", salvo.get().getTurn());
-        dto.put("hitLocations", salvo.get().getSalvoLocations());
-        dto.put("damages", );
-        dto.put("missed", );
-        return dto;
-    }
-
-    private Map<String, Object> damages(GamePlayer gamePlayer){
-        Map<String, Object> dto = new LinkedHashMap<>();
-
-        dto.put("carrierHits", );
-        dto.put()
-    }*/
-
-    /**
-        private Map<String, Object> makeGamePlayerDTO(GamePlayer gamePlayer) {
-        Map<String, Object> gamePlayerDto = new LinkedHashMap<>();
-        gamePlayerDto.put("id", gamePlayer.getId());
-        gamePlayerDto.put("player", makePlayerDTO(gamePlayer.getPlayer()));
-        return gamePlayerDto;
-
-
-     {
-     if (salvo.getTurn() == gamePlayer.getSalvoes().size()){
-     return salvo.getSalvoLocations();
-     }else {return "missing hits";}
-     }).findFirst().get())
-    }*/
 }

@@ -3,7 +3,9 @@ package com.codeoftheweb.salvo.dtos;
 import com.codeoftheweb.salvo.models.*;
 import com.codeoftheweb.salvo.utilities.Util;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,13 +48,13 @@ public class damagesDTO {
             long patroboatTotalDmg = patrolboat.getShipLocations().stream().filter(totalDamage::contains).count();
             long destroyerTotalDmg = destroyer.getShipLocations().stream().filter(totalDamage::contains).count();
             long submarineTotalDmg = submarine.getShipLocations().stream().filter(totalDamage::contains).count();
-
+            //damage in turn
             this.carrierHits = carrierDamage;
             this.battleshipHits = battleshipDamage;
             this.patrolboatHits = patrolboatDamage;
             this.destroyerHits = destroyerDamage;
             this.submarineHits = submarineDamage;
-
+            //total damage
             this.carrier = carrierTotalDmg;
             this.battleship = battleshipTotalDmg;
             this.patrolboat = patroboatTotalDmg;
