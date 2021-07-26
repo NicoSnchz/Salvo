@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -181,7 +182,7 @@ public class SalvoController {
         if (player.getId().equals(gamePlayer.getPlayer().getId())){ //Pregunta si el player que intenta unirse es el mismo que el que ya esta dentro
             return new ResponseEntity<>(Util.makeMap("error", "Same player can't join twice!"), HttpStatus.CONFLICT);
         }else{
-            GamePlayer newGamePlayer = gamePlayerRepo.save(new GamePlayer(player, game.get(), LocalDateTime.now()));
+            GamePlayer newGamePlayer = gamePlayerRepo.save(new GamePlayer(player, game.get(), LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"))));
             return new ResponseEntity<>(Util.makeMap("gpid",  newGamePlayer.getId()), HttpStatus.CREATED);
         }
     }
@@ -212,8 +213,8 @@ public class SalvoController {
             return new ResponseEntity<>(Util.makeMap("error", "Log-in to create a game"), HttpStatus.UNAUTHORIZED);
         }else{
             Player player = playerRepository.findByUserName(authentication.getName());
-            Game game = gameRepo.save(new Game(LocalDateTime.now()));
-            GamePlayer gamePlayer = gamePlayerRepo.save(new GamePlayer(player, game, LocalDateTime.now()));
+            Game game = gameRepo.save(new Game(LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"))));
+            GamePlayer gamePlayer = gamePlayerRepo.save(new GamePlayer(player, game, LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires"))));
             return new ResponseEntity<>(Util.makeMap("gpid", gamePlayer.getId()), HttpStatus.CREATED);
         }
     }
@@ -240,13 +241,13 @@ public class SalvoController {
                 Score score1 = new Score();
                 score1.setGame(gamePlayer.getGame());
                 score1.setPlayer(gamePlayer.getPlayer());
-                score1.setFinishDate(LocalDateTime.now());
+                score1.setFinishDate(LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
                 score1.setScore(1F);
                 scoreRepository.save(score1);
                 Score score2 = new Score();
                 score2.setGame(gamePlayer.getGame());
                 score2.setPlayer(gamePlayer.getOpponent(gamePlayer).get().getPlayer());
-                score2.setFinishDate(LocalDateTime.now());
+                score2.setFinishDate(LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
                 score2.setScore(0F);
                 scoreRepository.save(score2);
                 scores.add(score1);
@@ -260,13 +261,13 @@ public class SalvoController {
                 Score score1 = new Score();
                 score1.setGame(gamePlayer.getGame());
                 score1.setPlayer(gamePlayer.getPlayer());
-                score1.setFinishDate(LocalDateTime.now());
+                score1.setFinishDate(LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
                 score1.setScore(0.5F);
                 scoreRepository.save(score1);
                 Score score2 = new Score();
                 score2.setGame(gamePlayer.getGame());
                 score2.setPlayer(gamePlayer.getOpponent(gamePlayer).get().getPlayer());
-                score2.setFinishDate(LocalDateTime.now());
+                score2.setFinishDate(LocalDateTime.now(ZoneId.of("America/Argentina/Buenos_Aires")));
                 score2.setScore(0.5F);
                 scoreRepository.save(score2);
                 scores.add(score1);
