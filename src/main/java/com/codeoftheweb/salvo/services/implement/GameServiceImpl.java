@@ -66,6 +66,32 @@ public class GameServiceImpl implements GameService {
         return gamePlayerSalvoes.containsAll(opponentShips);
     }
 
+    public List<String> hits(Salvo salvo) {
+        GamePlayer gamePlayer = salvo.getGamePlayer();
+        GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
+
+        if (opponent != null) {
+            List<String> opponentShips = opponent.getShips().stream().flatMap(ship -> ship.getShipLocations().stream()).collect(Collectors.toList());
+            List<String> salvoLocations = salvo.getSalvoLocations();
+
+            return salvoLocations.stream().filter(opponentShips::contains).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
+    public Long missed(Salvo salvo) {
+        GamePlayer gamePlayer = salvo.getGamePlayer();
+        GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
+
+        if (opponent != null) {
+            List<String> opponentShips = opponent.getShips().stream().flatMap(ship -> ship.getShipLocations().stream()).collect(Collectors.toList());
+            List<String> salvoLocations = salvo.getSalvoLocations();
+
+            return salvoLocations.stream().filter(s -> !opponentShips.contains(s)).count();
+        }
+        return 0L;
+    }
+
     public DamagesDTO makeDamageDTO(Salvo salvo){
 
         DamagesDTO damagesDTO = new DamagesDTO();
@@ -75,7 +101,7 @@ public class GameServiceImpl implements GameService {
 
         if (opponent != null) {
 
-            //consigue cada barco del oponente.
+            //Consigue cada barco del oponente.
             Ship carrier = opponent.getShips().stream().filter(ship -> ship.getType().equals("carrier")).findFirst().orElse(null);
             Ship battleship = opponent.getShips().stream().filter(ship -> ship.getType().equals("battleship")).findFirst().orElse(null);
             Ship patrolboat = opponent.getShips().stream().filter(ship -> ship.getType().equals("patrolboat")).findFirst().orElse(null);
@@ -92,21 +118,23 @@ public class GameServiceImpl implements GameService {
             List<String> totalDamage = gamePlayer.getSalvoes()
                     .stream()
                     .filter(salvo1 -> salvo1.getTurn() <= salvo.getTurn())
-                    .flatMap(s -> Util.hits(s).stream())
+                    .flatMap(s -> hits(s).stream())
                     .collect(Collectors.toList());
 
-            //calcula el historial de todos los hits en los barcos.
+            //Calcula el historial de todos los hits en los barcos.
             long carrierTotalDmg = carrier.getShipLocations().stream().filter(totalDamage::contains).count();
             long battleshipTotalDmg = battleship.getShipLocations().stream().filter(totalDamage::contains).count();
             long patroboatTotalDmg = patrolboat.getShipLocations().stream().filter(totalDamage::contains).count();
             long destroyerTotalDmg = destroyer.getShipLocations().stream().filter(totalDamage::contains).count();
             long submarineTotalDmg = submarine.getShipLocations().stream().filter(totalDamage::contains).count();
 
+            //Guarda toda la info del daño en el turno
             damagesDTO.setCarrierHits(carrierDamage);
             damagesDTO.setBattleshipHits(battleshipDamage);
             damagesDTO.setPatrolboatHits(patrolboatDamage);
             damagesDTO.setDestroyerHits(destroyerDamage);
             damagesDTO.setSubmarineHits(submarineDamage);
+            //Guarda toda la info de daño total
             damagesDTO.setCarrier(carrierTotalDmg);
             damagesDTO.setBattleship(battleshipTotalDmg);
             damagesDTO.setPatrolboat(patroboatTotalDmg);
@@ -121,9 +149,9 @@ public class GameServiceImpl implements GameService {
         HitRecordDTO hitRecordDTO = new HitRecordDTO();
 
         hitRecordDTO.setTurn(salvo.getTurn());
-        hitRecordDTO.setHitLocations(Util.hits(salvo));
+        hitRecordDTO.setHitLocations(hits(salvo));
         hitRecordDTO.setDamages(makeDamageDTO(salvo));
-        hitRecordDTO.setMissed(Util.missed(salvo));
+        hitRecordDTO.setMissed(missed(salvo));
 
         return hitRecordDTO;
     }
@@ -139,7 +167,6 @@ public class GameServiceImpl implements GameService {
             hitsDTO.setSelf(new HashSet<>());
             hitsDTO.setOpponent(new HashSet<>());
         }
-
 
         GameViewDTO gameViewDTO = new GameViewDTO();
 

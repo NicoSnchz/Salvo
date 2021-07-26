@@ -83,7 +83,11 @@ public class SalvoController {
         }
 
         for (Ship ship:ships){
-            shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getShipLocations()));
+            ship.setGamePlayer(gamePlayer);
+            ship.setShipLocations(ship.getShipLocations());
+            ship.setType(ship.getType());
+            shipRepository.save(ship);
+            //shipRepository.save(new Ship(gamePlayer, ship.getType(), ship.getShipLocations()));
         }
         return new ResponseEntity<>(Util.makeMap("OK", "Ships placed"),HttpStatus.CREATED);
     }
@@ -229,8 +233,6 @@ public class SalvoController {
         if (gamePlayer == null){
             return new ResponseEntity<>(Util.makeMap("error", "there's not such Gameplayer"), HttpStatus.NOT_FOUND);
         }
-
-        //hacer toda la estructura de los if
 
         if (gameService.getGameState(gamePlayer).equals(GameState.WON.name())){
             if (gamePlayer.getGame().getScores().size() < 2){

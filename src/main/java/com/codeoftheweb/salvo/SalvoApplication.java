@@ -72,7 +72,6 @@ public class SalvoApplication {
 			//Game Repository save
 			gameRepository.save(game1);
 			gameRepository.save(game2);
-			gameRepository.save(game3);
 
 			//GamePlayer: Player, Game, Join Date.
 			GamePlayer gamePlayer1 = new GamePlayer(player1, game1, LocalDateTime.now());
@@ -143,8 +142,8 @@ public class SalvoApplication {
 			//Scores Repository save
 			//scoreRepository.save(score1);
 			//scoreRepository.save(score2);
-			//scoreRepository.save(score3);
-			//scoreRepository.save(score4);
+			scoreRepository.save(score3);
+			scoreRepository.save(score4);
 		};
 	}
 }

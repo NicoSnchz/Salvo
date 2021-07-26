@@ -20,30 +20,4 @@ public class Util {
     public static boolean isGuest(Authentication authentication) {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
-
-    public static List<String> hits(Salvo salvo) {
-        GamePlayer gamePlayer = salvo.getGamePlayer();
-        GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
-
-        if (opponent != null) {
-            List<String> opponentShips = opponent.getShips().stream().flatMap(ship -> ship.getShipLocations().stream()).collect(Collectors.toList());
-            List<String> salvoLocations = salvo.getSalvoLocations();
-
-            return salvoLocations.stream().filter(opponentShips::contains).collect(Collectors.toList());
-        }
-        return new ArrayList<>();
-    }
-
-    public static Long missed(Salvo salvo) {
-        GamePlayer gamePlayer = salvo.getGamePlayer();
-        GamePlayer opponent = gamePlayer.getOpponent(gamePlayer).orElse(null);
-
-        if (opponent != null) {
-            List<String> opponentShips = opponent.getShips().stream().flatMap(ship -> ship.getShipLocations().stream()).collect(Collectors.toList());
-            List<String> salvoLocations = salvo.getSalvoLocations();
-
-            return salvoLocations.stream().filter(s -> !opponentShips.contains(s)).count();
-        }
-        return 0L;
-    }
 }

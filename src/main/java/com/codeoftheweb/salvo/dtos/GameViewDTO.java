@@ -35,17 +35,6 @@ public class GameViewDTO {
         this.hits = hits;
     }
 
-    public GameViewDTO(LocalDateTime created, String gameState, Set<GamePlayerDTO> gamePlayers, Set<ShipDTO> ships, Set<SalvoesDTO> salvoes, HitsDTO hits) {
-        this.created = created;
-        this.gameState = gameState;
-        this.gamePlayers = gamePlayers;
-        this.ships = ships;
-        this.salvoes = salvoes;
-        this.hits = hits;
-    }
-
-
-
     public Long getId() {
         return id;
     }
