@@ -59,19 +59,19 @@ public class SalvoApplication {
 			Player player3 = new Player("player3@gmail.com", passwordEncoder.encode("hola"));
 			Player player4 = new Player("player4@gmail.com", passwordEncoder.encode("kb"));
 			//Player Repository save
-			playerRepository.save(admin);
+			/*playerRepository.save(admin);
 			playerRepository.save(player1);
 			playerRepository.save(player2);
 			playerRepository.save(player3);
-			playerRepository.save(player4);
+			playerRepository.save(player4);*/
 
 			//Game:  Time of creation.
 			Game game1 = new Game(LocalDateTime.now());
 			Game game2 = new Game(LocalDateTime.now().plusHours(1));
 			Game game3 = new Game(LocalDateTime.now().plusHours(3));
 			//Game Repository save
-			gameRepository.save(game1);
-			gameRepository.save(game2);
+			/*gameRepository.save(game1);
+			gameRepository.save(game2);*/
 
 			//GamePlayer: Player, Game, Join Date.
 			GamePlayer gamePlayer1 = new GamePlayer(player1, game1, LocalDateTime.now());
@@ -79,10 +79,10 @@ public class SalvoApplication {
 			GamePlayer gamePlayer3 = new GamePlayer(player3, game2, LocalDateTime.now());
 			GamePlayer gamePlayer4 = new GamePlayer(player4, game2, LocalDateTime.now());
 			//GamePlayer Repository save
-			gamePlayerRepository.save(gamePlayer1);
+			/*gamePlayerRepository.save(gamePlayer1);
 			gamePlayerRepository.save(gamePlayer2);
 			gamePlayerRepository.save(gamePlayer3);
-			gamePlayerRepository.save(gamePlayer4);
+			gamePlayerRepository.save(gamePlayer4);*/
 
 			//Ships: GamePlayer, Type of ship, Locations of the ship in the board.
 			Ship ship1 = new Ship(gamePlayer1, "carrier", List.of("I4", "I5", "I6", "I7", "I8"));
@@ -98,7 +98,7 @@ public class SalvoApplication {
 			Ship ship10 = new Ship(gamePlayer2, "submarine", List.of("F2", "F3", "F4"));
 
 			//Ship Repository save
-			shipRepository.save(ship1);
+			/*shipRepository.save(ship1);
 			shipRepository.save(ship2);
 			shipRepository.save(ship3);
 			shipRepository.save(ship4);
@@ -107,7 +107,7 @@ public class SalvoApplication {
 			shipRepository.save(ship7);
 			shipRepository.save(ship8);
 			shipRepository.save(ship9);
-			shipRepository.save(ship10);
+			shipRepository.save(ship10);*/
 
 			//Salvoes: GamePlayer, Location of de Salvo, turn.
 			Salvo salvo1 = new Salvo(gamePlayer1, List.of("B2", "C2", "D8","E8", "F8"), 1); //PATROLBOAT - DESTROYER
@@ -122,7 +122,7 @@ public class SalvoApplication {
 			Salvo salvo0 = new Salvo(gamePlayer4, List.of("E9", "C2", "E1"), 1);
 			Salvo salvo11 = new Salvo(gamePlayer4, List.of("B5", "B6", "B7"), 2);
 			//Salvoes Repository save
-			salvoRepository.save(salvo1);
+			/*salvoRepository.save(salvo1);
 			salvoRepository.save(salvo2);
 			salvoRepository.save(salvo3);
 			salvoRepository.save(salvo4);
@@ -132,7 +132,7 @@ public class SalvoApplication {
 			salvoRepository.save(salvo8);
 			salvoRepository.save(salvo9);
 			salvoRepository.save(salvo0);
-			salvoRepository.save(salvo11);
+			salvoRepository.save(salvo11);*/
 
 			//Scores:
 			Score score1 = new Score(player1, game1, 1f, LocalDateTime.now().plusMinutes(30L));
@@ -140,10 +140,10 @@ public class SalvoApplication {
 			Score score3 = new Score(player3, game2, .5f, LocalDateTime.now().plusMinutes(30L));
 			Score score4 = new Score(player4, game2, .5f, LocalDateTime.now().plusMinutes(30L));
 			//Scores Repository save
-			//scoreRepository.save(score1);
-			//scoreRepository.save(score2);
+			/*scoreRepository.save(score1);
+			scoreRepository.save(score2);
 			scoreRepository.save(score3);
-			scoreRepository.save(score4);
+			scoreRepository.save(score4);*/
 		};
 	}
 }
