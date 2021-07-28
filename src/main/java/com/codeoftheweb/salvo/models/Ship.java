@@ -18,7 +18,7 @@ public class Ship {
     @JoinColumn(name="gamePlayer_id")
     private GamePlayer gamePlayer;
 
-    private String shipType;
+    private String type;
 
     @ElementCollection
     @Column(name="locations")
@@ -31,7 +31,7 @@ public class Ship {
 
     public Ship(GamePlayer gamePlayer, String shipType, List<String> shipLocations) {
         this.gamePlayer = gamePlayer;
-        this.shipType = shipType;
+        this.type = shipType;
         this.shipLocations = shipLocations;
     }
 
@@ -40,8 +40,8 @@ public class Ship {
         return gamePlayer;
     }
 
-    public String getShipType() {
-        return shipType;
+    public String getType() {
+        return type;
     }
 
     public List<String> getShipLocations() {
@@ -54,8 +54,8 @@ public class Ship {
         this.gamePlayer = gamePlayer;
     }
 
-    public void setShipType(String shipType) {
-        this.shipType = shipType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setShipLocations(List<String> shipLocations) {

@@ -42,7 +42,6 @@ public class Player {
 
 
     //Add GamePlayer
-    @JsonIgnore
     public void addGamePlayer(GamePlayer gamePlayer){
         gamePlayer.setPlayer(this);
         gamePlayers.add(gamePlayer);
