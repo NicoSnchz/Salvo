@@ -41,11 +41,7 @@ public class GameServiceImpl implements GameService {
             return GameState.LOST.name();
         }
 
-        if (gamePlayer.getSalvoes().size() == opponent.get().getSalvoes().size()){
-            return GameState.PLAY.name();
-        }
-
-        if (gamePlayer.getSalvoes().size() < opponent.get().getSalvoes().size()){
+        if (gamePlayer.getSalvoes().size() <= opponent.get().getSalvoes().size()){
             return GameState.PLAY.name();
         }
 
